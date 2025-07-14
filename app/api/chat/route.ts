@@ -1,18 +1,18 @@
-import { openai } from "@ai-sdk/openai"
-import { streamText } from "ai"
+import { streamText } from "ai";
+import { perplexity } from "@ai-sdk/perplexity";
 
-// Allow streaming responses up to 30 seconds
-export const maxDuration = 30
+export const runtime = "edge";
 
 export async function POST(req: Request) {
-  const { messages } = await req.json()
+  const { messages } = await req.json();
+
+  const systemPrompt = "You are an AI research assistant. Provide concise, accurate, and cited answers based on your search results.";
 
   const result = streamText({
-    model: openai("gpt-4o"),
-    system:
-      "You are Jurnl, a personal AI research assistant. Provide helpful, accurate, and well-researched responses. Always aim to be informative and cite relevant sources when possible.",
+    model: perplexity("llama-3-sonar-small-32k-online"),
+    system: systemPrompt,
     messages,
-  })
+  });
 
-  return result.toDataStreamResponse()
+  return result.toDataStreamResponse();
 }

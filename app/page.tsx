@@ -1,6 +1,6 @@
 "use client"
 
-import { useChat } from "@ai-sdk/react"
+import { useChat } from "ai/react"
 import { Send } from "lucide-react"
 import { Navigation } from "./components/navigation"
 
