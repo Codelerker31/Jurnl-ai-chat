@@ -1,0 +1,50 @@
+---
+rules:
+  - id: CORE_TECHNOLOGY_STACK
+    description: "The application is built on a specific, modern stack. All generated code must adhere to it strictly. The stack is: Next.js 14 (App Router), TypeScript, and Tailwind CSS. The primary AI provider is Perplexity AI, using the `perplexity-ai` SDK. Frontend chat state is managed by the Vercel AI SDK's `useChat` hook (`ai/react`)."
+    goodExample: |
+      // Correctly importing and using the approved stack
+      import { useChat } from 'ai/react';
+      import Perplexity from 'perplexity-ai';
+      import { Cog } from 'lucide-react';
+
+      const MyComponent = () => {
+        // ... uses useChat hook
+      }
+
+  - id: ARCHITECTURAL_PATTERN_MCP
+    description: "This is the most important architectural rule. The application follows a strict 'Orchestrator-Tool' pattern.
+    1. The main chat API (`/api/chat`) acts as the **Orchestrator**. Its ONLY job is to talk to the primary LLM (Perplexity) and handle streaming responses. It should NOT contain complex business logic like database interactions.
+    2. All other backend functionalities (e.g., managing user streams, sending notifications) MUST be built as separate, single-purpose **Tool Servers** following the Model Context Protocol (MCP) philosophy. These servers will reside in the `/api/mcp/` directory.
+    3. The Orchestrator can call these Tool Servers if the LLM requests a function call, but a Tool Server should never call the Orchestrator."
+    goodExample: |
+      // A request to create a stream. The logic is correctly placed in an MCP server.
+      // File: /api/mcp/streams/create/route.ts
+      export async function POST(req: Request) {
+        // ... database logic to create a new stream ...
+        return Response.json({ status: 'success' });
+      }
+    badExample: |
+      // Incorrectly putting database logic inside the main chat orchestrator.
+      // File: /api/chat/route.ts
+      export async function POST(req: Request) {
+        if (req.headers.get('X-Action') === 'CREATE_STREAM') {
+          // BAD: This logic belongs in a separate MCP server, not the chat API.
+          // ... database logic here ...
+        } else {
+          // ... Perplexity chat logic ...
+        }
+      }
+
+  - id: UI_UX_PHILOSOPHY
+    description: "The application's user interface must be consistent, minimalist, and focused.
+    1. **V0 is the source of truth for UI.** All UI components should be initially generated from V0 prompts that specify a clean, dark-mode, Perplexity-inspired design.
+    2. **Use `lucide-react` exclusively for icons.** Do not use SVGs directly or any other icon library.
+    3. **Use `react-hot-toast` for notifications.** For non-blocking user feedback (e.g., 'Stream Created'), use toasts instead of alerts or modals."
+
+  - id: CLIENT_VS_SERVER_LOGIC
+    description: "A strict separation between client and server logic must be maintained.
+    1. **Default to Server Components.** Components should only be marked with `'use client'` if they absolutely require interactivity (e.g., using hooks like `useState`, `useEffect`, or `useChat`).
+    2. **No Sensitive Logic on the Client.** Any logic that involves API keys, database connections, or other secrets MUST reside within an `app/api/*` route. Never expose these to a client component. Client components should only ever call our own internal API routes."
+alwaysApply: true
+---
