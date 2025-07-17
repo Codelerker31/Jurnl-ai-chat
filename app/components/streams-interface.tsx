@@ -152,16 +152,16 @@ function StreamCard({ stream, onSettingsClick }: { stream: Stream; onSettingsCli
   return (
     <div
       onClick={handleStreamClick}
-      className="bg-[#1C1C1C] border border-[#333333] rounded-xl p-6 hover:bg-[#2A2A2A] hover:border-[#444444] transition-all duration-200 cursor-pointer group"
+      className="bg-[#1C1C1C] border border-[#333333] rounded-xl p-4 sm:p-6 hover:bg-[#2A2A2A] hover:border-[#444444] transition-all duration-200 cursor-pointer group"
     >
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#FFB347] transition-colors">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <h3 className="text-base sm:text-lg font-bold text-white mb-2 group-hover:text-[#FFB347] transition-colors break-words">
             {stream.title}
           </h3>
-          <div className="flex items-center gap-4 text-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
             <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${
+              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
                 stream.lastUpdated.includes('Just') || stream.lastUpdated.includes('minute') || stream.lastUpdated.includes('hour')
                   ? 'bg-green-500' 
                   : stream.lastUpdated.includes('day') || stream.lastUpdated.includes('Yesterday')
@@ -179,16 +179,16 @@ function StreamCard({ stream, onSettingsClick }: { stream: Stream; onSettingsCli
                 {stream.lastUpdated}
               </span>
             </div>
-            <span className="text-gray-500">•</span>
+            <span className="text-gray-500 hidden sm:inline">•</span>
             <span className="text-gray-400">Frequency: {stream.frequency}</span>
           </div>
           {stream.description && <p className="text-gray-500 text-sm mt-2">{stream.description}</p>}
         </div>
         <button
           onClick={handleSettingsClick}
-          className="p-2 text-gray-400 hover:text-white hover:bg-[#333333] rounded-lg transition-colors ml-4"
+          className="p-2 text-gray-400 hover:text-white hover:bg-[#333333] rounded-lg transition-colors flex-shrink-0"
         >
-          <Settings className="w-5 h-5" />
+          <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
       </div>
     </div>
@@ -257,10 +257,10 @@ export function StreamsInterface({ streams, hasError = false }: StreamsInterface
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-white">My Streams</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white">My Streams</h1>
         <button 
           onClick={() => {
             console.log('🔥 New Stream button clicked!')
@@ -272,7 +272,7 @@ export function StreamsInterface({ streams, hasError = false }: StreamsInterface
             // Navigate to chat page
             router.push('/chat')
           }}
-          className="bg-[#FF6600] hover:bg-[#e55a00] text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors">
+          className="bg-[#FF6600] hover:bg-[#e55a00] text-white px-4 py-2.5 sm:py-2 rounded-lg font-medium flex items-center gap-2 transition-colors w-full sm:w-auto justify-center">
           <Plus className="w-4 h-4" />
           New Stream
         </button>
@@ -280,18 +280,18 @@ export function StreamsInterface({ streams, hasError = false }: StreamsInterface
 
       {/* Error State (if database tables don't exist) */}
       {hasError ? (
-        <div className="text-center py-16">
+        <div className="text-center py-12 sm:py-16">
           <div className="text-red-400 mb-4">
-            <Settings className="w-16 h-16 mx-auto mb-4 opacity-50" />
-            <h3 className="text-xl font-medium mb-2">Database Setup Required</h3>
-            <p className="text-gray-400 mb-4">
+            <Settings className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-50" />
+            <h3 className="text-lg sm:text-xl font-medium mb-2">Database Setup Required</h3>
+            <p className="text-gray-400 mb-4 text-sm sm:text-base">
               The streams feature requires database tables to be created.
             </p>
-            <div className="bg-[#1C1C1C] border border-[#333333] rounded-xl p-6 text-left max-w-2xl mx-auto">
+            <div className="bg-[#1C1C1C] border border-[#333333] rounded-xl p-4 sm:p-6 text-left max-w-2xl mx-auto">
               <p className="text-sm text-gray-300 mb-3">
                 Please run this SQL in your <strong>Supabase Dashboard → SQL Editor</strong>:
               </p>
-              <pre className="text-xs text-gray-400 bg-[#0A0A0A] p-4 rounded-lg overflow-x-auto">
+              <pre className="text-xs text-gray-400 bg-[#0A0A0A] p-3 sm:p-4 rounded-lg overflow-x-auto">
                 {SETUP_SQL}
               </pre>
               <p className="text-sm text-gray-400 mt-3">
@@ -303,7 +303,7 @@ export function StreamsInterface({ streams, hasError = false }: StreamsInterface
       ) : (
         <>
           {/* Stream Cards */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {transformedStreams.map((stream) => (
               <StreamCard key={stream.id} stream={stream} onSettingsClick={() => handleSettingsClick(stream)} />
             ))}
@@ -311,11 +311,11 @@ export function StreamsInterface({ streams, hasError = false }: StreamsInterface
 
           {/* Empty State (if no streams) */}
           {transformedStreams.length === 0 && (
-            <div className="text-center py-16">
+            <div className="text-center py-12 sm:py-16">
               <div className="text-gray-400 mb-4">
-                <Settings className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <h3 className="text-xl font-medium mb-2">No streams yet</h3>
-                <p className="text-gray-500">Create your first stream to start tracking topics you care about.</p>
+                <Settings className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 opacity-50" />
+                <h3 className="text-lg sm:text-xl font-medium mb-2">No streams yet</h3>
+                <p className="text-gray-500 text-sm sm:text-base">Create your first stream to start tracking topics you care about.</p>
               </div>
               <button 
                 onClick={() => {
@@ -328,7 +328,7 @@ export function StreamsInterface({ streams, hasError = false }: StreamsInterface
                   // Navigate to chat page
                   router.push('/chat')
                 }}
-                className="bg-[#FF6600] hover:bg-[#e55a00] text-white px-6 py-3 rounded-lg font-medium mt-6 transition-colors">
+                className="bg-[#FF6600] hover:bg-[#e55a00] text-white px-6 py-3 rounded-lg font-medium mt-4 sm:mt-6 transition-colors text-sm sm:text-base">
                 Create Your First Stream
               </button>
             </div>

@@ -50,13 +50,19 @@ export function UserMenu({ user }: UserMenuProps) {
             <p className="text-xs text-gray-400 truncate">{user.email}</p>
           </div>
           <a
-            href="#"
+            href="/dashboard"
+            className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#2A2A2A] transition-colors"
+          >
+            Dashboard
+          </a>
+          <a
+            href="/profile"
             className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#2A2A2A] transition-colors"
           >
             Profile Settings
           </a>
           <a
-            href="#"
+            href="/billing"
             className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#2A2A2A] transition-colors"
           >
             Billing

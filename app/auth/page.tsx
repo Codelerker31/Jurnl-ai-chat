@@ -24,25 +24,27 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen bg-[#121212] text-white flex flex-col">
       {/* Simple Header */}
-      <div className="p-4">
-        <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+      <div className="p-3 sm:p-4">
+        <a href="/" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
           <ArrowLeft className="w-4 h-4" />
           <span className="text-sm">Back to Jurnl</span>
-        </button>
+        </a>
       </div>
 
       {/* Main Auth Container */}
-      <div className="flex-1 flex items-center justify-center px-4">
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex items-center justify-center px-3 sm:px-4 py-4 sm:py-6">
+        <div className="w-full max-w-sm sm:max-w-md">
           {/* Auth Card */}
-          <div className="bg-[#1C1C1C] border border-[#333333] rounded-2xl p-8">
+          <div className="bg-[#1C1C1C] border border-[#333333] rounded-2xl p-6 sm:p-8">
             {/* Heading */}
-            <h1 className="text-3xl font-bold text-center mb-8">{isLogin ? "Welcome Back" : "Create an Account"}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">
+              {isLogin ? "Welcome Back" : "Create an Account"}
+            </h1>
 
             {/* Google Auth Button */}
             <button
               onClick={handleGoogleAuth}
-              className="w-full bg-white hover:bg-gray-100 text-black font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-3 mb-6 transition-colors"
+              className="w-full bg-white hover:bg-gray-100 text-black font-medium py-2.5 sm:py-3 px-4 rounded-xl flex items-center justify-center gap-3 mb-4 sm:mb-6 transition-colors text-sm sm:text-base"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -66,7 +68,7 @@ export default function AuthPage() {
             </button>
 
             {/* Divider */}
-            <div className="relative mb-6">
+            <div className="relative mb-4 sm:mb-6">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-[#333333]"></div>
               </div>
@@ -86,7 +88,7 @@ export default function AuthPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-[#121212] border border-[#333333] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-[#FF6600] focus:ring-1 focus:ring-[#FF6600] transition-colors"
+                  className="w-full bg-[#121212] border border-[#333333] text-white px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base focus:outline-none focus:border-[#FF6600] focus:ring-1 focus:ring-[#FF6600] transition-colors"
                   placeholder="Enter your email"
                   required
                 />
@@ -101,7 +103,7 @@ export default function AuthPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-[#121212] border border-[#333333] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-[#FF6600] focus:ring-1 focus:ring-[#FF6600] transition-colors"
+                  className="w-full bg-[#121212] border border-[#333333] text-white px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base focus:outline-none focus:border-[#FF6600] focus:ring-1 focus:ring-[#FF6600] transition-colors"
                   placeholder="Enter your password"
                   required
                 />
@@ -109,14 +111,14 @@ export default function AuthPage() {
 
               <button
                 type="submit"
-                className="w-full bg-[#FF6600] hover:bg-[#e55a00] text-white font-medium py-3 px-4 rounded-xl transition-colors"
+                className="w-full bg-[#FF6600] hover:bg-[#e55a00] text-white font-medium py-2.5 sm:py-3 px-4 rounded-xl transition-colors text-sm sm:text-base"
               >
                 Continue
               </button>
             </form>
 
             {/* Switch Auth Mode */}
-            <div className="text-center mt-6">
+            <div className="text-center mt-4 sm:mt-6">
               <p className="text-gray-400 text-sm">
                 {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
                 <button
@@ -130,7 +132,7 @@ export default function AuthPage() {
           </div>
 
           {/* Additional Links */}
-          <div className="text-center mt-6">
+          <div className="text-center mt-4 sm:mt-6">
             <a href="#" className="text-gray-400 hover:text-gray-300 text-sm transition-colors">
               Forgot your password?
             </a>

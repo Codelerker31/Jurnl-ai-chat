@@ -123,18 +123,16 @@ function transformUpdate(dbUpdate: DatabaseStreamUpdate): StreamUpdate {
   }
 }
 
-
-
 function UpdateCard({ update }: { update: StreamUpdate }) {
   return (
-    <div className="bg-[#1C1C1C] border border-[#333333] rounded-xl p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <Calendar className="w-4 h-4 text-gray-400" />
+    <div className="bg-[#1C1C1C] border border-[#333333] rounded-xl p-4 sm:p-6">
+      <div className="flex items-center gap-2 mb-3 sm:mb-4">
+        <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
         <span className="text-sm font-medium text-gray-300">{update.timestamp}</span>
       </div>
       <div className="prose prose-invert max-w-none">
         {update.content.split("\n\n").map((paragraph, index) => (
-          <p key={index} className="text-gray-200 leading-relaxed mb-4 last:mb-0">
+          <p key={index} className="text-gray-200 leading-relaxed mb-3 sm:mb-4 last:mb-0 text-sm sm:text-base">
             {paragraph}
           </p>
         ))}
@@ -215,70 +213,72 @@ export function StreamDetailInterface({ stream, updates }: StreamDetailInterface
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
       {/* Back Button */}
       <button
         onClick={handleBack}
-        className="flex items-center gap-2 text-gray-400 hover:text-white mb-6 transition-colors"
+        className="flex items-center gap-2 text-gray-400 hover:text-white mb-4 sm:mb-6 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         <span className="text-sm">Back to My Streams</span>
       </button>
 
       {/* Stream Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-4">{streamDisplayData.title}</h1>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 break-words">{streamDisplayData.title}</h1>
 
-        <div className="flex items-center justify-between bg-[#1C1C1C] border border-[#333333] rounded-xl p-4">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-gray-300">
-              <Clock className="w-4 h-4" />
-              <span className="text-sm">{streamDisplayData.settings}</span>
+        <div className="bg-[#1C1C1C] border border-[#333333] rounded-xl p-4">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-2 text-gray-300">
+                <Clock className="w-4 h-4 flex-shrink-0" />
+                <span className="text-sm break-words">{streamDisplayData.settings}</span>
+              </div>
+              <span className="text-gray-500 hidden sm:inline">•</span>
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                  streamDisplayData.lastCheck.includes('Just') || streamDisplayData.lastCheck.includes('minute') || streamDisplayData.lastCheck.includes('hour')
+                    ? 'bg-green-500' 
+                    : streamDisplayData.lastCheck.includes('day') || streamDisplayData.lastCheck.includes('Yesterday')
+                    ? 'bg-yellow-500'
+                    : 'bg-red-500'
+                }`} />
+                <span className="text-sm text-gray-400">Last check: </span>
+                <span className={`text-sm font-medium ${
+                  streamDisplayData.lastCheck.includes('Just') || streamDisplayData.lastCheck.includes('minute') || streamDisplayData.lastCheck.includes('hour')
+                    ? 'text-green-400' 
+                    : streamDisplayData.lastCheck.includes('day') || streamDisplayData.lastCheck.includes('Yesterday')
+                    ? 'text-yellow-400'
+                    : 'text-red-400'
+                }`}>
+                  {streamDisplayData.lastCheck}
+                </span>
+              </div>
             </div>
-            <span className="text-gray-500">•</span>
-            <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${
-                streamDisplayData.lastCheck.includes('Just') || streamDisplayData.lastCheck.includes('minute') || streamDisplayData.lastCheck.includes('hour')
-                  ? 'bg-green-500' 
-                  : streamDisplayData.lastCheck.includes('day') || streamDisplayData.lastCheck.includes('Yesterday')
-                  ? 'bg-yellow-500'
-                  : 'bg-red-500'
-              }`} />
-              <span className="text-sm text-gray-400">Last check: </span>
-              <span className={`text-sm font-medium ${
-                streamDisplayData.lastCheck.includes('Just') || streamDisplayData.lastCheck.includes('minute') || streamDisplayData.lastCheck.includes('hour')
-                  ? 'text-green-400' 
-                  : streamDisplayData.lastCheck.includes('day') || streamDisplayData.lastCheck.includes('Yesterday')
-                  ? 'text-yellow-400'
-                  : 'text-red-400'
-              }`}>
-                {streamDisplayData.lastCheck}
-              </span>
-            </div>
+            <button
+              onClick={handleEdit}
+              className="flex items-center justify-center gap-2 text-[#FF6600] hover:text-[#FFB347] text-sm font-medium transition-colors w-full sm:w-auto"
+            >
+              <Edit className="w-4 h-4" />
+              Edit
+            </button>
           </div>
-          <button
-            onClick={handleEdit}
-            className="flex items-center gap-2 text-[#FF6600] hover:text-[#FFB347] text-sm font-medium transition-colors"
-          >
-            <Edit className="w-4 h-4" />
-            Edit
-          </button>
         </div>
       </div>
 
       {/* Updates List */}
-      <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-white mb-4">Recent Updates</h2>
+      <div className="space-y-4 sm:space-y-6">
+        <h2 className="text-xl font-semibold text-white mb-3 sm:mb-4">Recent Updates</h2>
 
         {transformedUpdates.length > 0 ? (
           transformedUpdates.map((update) => <UpdateCard key={update.id} update={update} />)
         ) : (
           /* No Updates State */
-          <div className="bg-[#1C1C1C] border border-[#333333] rounded-xl p-8 text-center">
+          <div className="bg-[#1C1C1C] border border-[#333333] rounded-xl p-6 sm:p-8 text-center">
             <div className="text-gray-400 mb-4">
-              <Clock className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <h3 className="text-lg font-medium mb-2">No new updates since the last check</h3>
-              <p className="text-gray-500">We'll notify you when there are new developments in this topic.</p>
+              <Clock className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 opacity-50" />
+              <h3 className="text-base sm:text-lg font-medium mb-2">No new updates since the last check</h3>
+              <p className="text-gray-500 text-sm sm:text-base">We'll notify you when there are new developments in this topic.</p>
             </div>
           </div>
         )}
@@ -286,8 +286,8 @@ export function StreamDetailInterface({ stream, updates }: StreamDetailInterface
 
       {/* Load More Button (if needed) */}
       {transformedUpdates.length > 0 && (
-        <div className="text-center mt-8">
-          <button className="bg-[#1C1C1C] hover:bg-[#2A2A2A] border border-[#333333] text-gray-300 hover:text-white px-6 py-3 rounded-lg transition-colors">
+        <div className="text-center mt-6 sm:mt-8">
+          <button className="bg-[#1C1C1C] hover:bg-[#2A2A2A] border border-[#333333] text-gray-300 hover:text-white px-6 py-3 rounded-lg transition-colors text-sm sm:text-base">
             Load Earlier Updates
           </button>
         </div>
